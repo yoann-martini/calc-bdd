@@ -18,59 +18,79 @@
             </div>
             <div class="card-body">
 
-                <form action="/add" method="POST" class="form">
+                <form action="/add" method="POST" class="form col-11" >
 
                     <div class="form-group row">
                         <div class="col-sm-2">
-                            <input type="number" name="chiffre1" id="chiffre1" class="form-control m-2">
-                            <input type="number" name="chiffre2" id="chiffre2" class="form-control m-2">
+                            <input type="number" name="chiffre1" id="chiffre1" class="form-control m-2" <% if (locals.edit){%> value="<%= edit[0].chiffre1%>" <%}%> >
+                            <input type="number" name="chiffre2" id="chiffre2" class="form-control m-2" <% if (locals.edit){%> value="<%= edit[0].chiffre2%>" <%}%> >
                         </div>
                         <div class="col-sm-">
                             <div class="form-check m-2">
-                                <input type="radio" name="signe" id="plus" value="+" class="form-check-input">
+                                <input type="radio" name="signe" id="plus" value="+" class="form-check-input" <% if (locals.edit[0].operateur=='+'){%> checked <%}%>>
                                 <label for="plus" class="form-check-label">+</label>
                             </div>
                             <div class="form-check m-2">
-                                <input type="radio" name="signe" id="moins" value="-" class="form-check-input">
+                                <input type="radio" name="signe" id="moins" value="-" class="form-check-input" <% if (locals.edit[0].operateur=='-'){%> checked <%}%>>
                                 <label for="moins" class="form-check-label">-</label>
                             </div>
                         </div>
                         <div class="col-sm-1">
                             <div class="form-check m-2">
-                                <input type="radio" name="signe" id="mutiplier" value="*" class="form-check-input">
+                                <input type="radio" name="signe" id="mutiplier" value="*" class="form-check-input" <% if (locals.edit[0].operateur=='*'){%> checked <%}%>>
                                 <label for="multiplier" class="form-check-label">x</label>
                             </div>
                             <div class="form-check m-2">
-                                <input type="radio" name="signe" id="diviser" value="/" class="form-check-input">
+                                <input type="radio" name="signe" id="diviser" value="/" class="form-check-input" <% if (locals.edit[0].operateur=='/'){%> checked <%}%>>
                                 <label for="diviser" class="form-check-label">:</label>
                             </div>
-                            <div class="form-check m-2">
-                                <input type="radio" name="statut" id="statut" value="/" class="form-check-input">
-                                <label for="statut" class="form-check-label">:</label>
-                            </div>
-                            <input type="submit" value="calculer" class="btn btn-primary">
+
+                            <input type="submit" value="ajouter" class="btn btn-primary">
                         </div>
                         
                     </div>
 
+                  
 
                 </form>
+
+
             </div>
-            <div class="card-footer">
-                <% if (locals.resultat){ %>
-                <%= resultat %>
-                <% } %>
 
-                <% if (locals.error){%>
-                <%= error%>
-                <%}%>
-        </div>
+    </div>
+        <br><br>
+        <div class="row">
 
+                <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">n 1</th>
+                            <th scope="col">op</th>
+                            <th scope="col">n 2</th>
+                            <th scope="col">actions</th>
+                            <th scope="col">résultat</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                         
+                            <% for(let i =0; i<calculs.length; i++){ %>
+                                    <tr>
+                                    <th scope="row"><%= i+1 %></th>
+                                    <td><%= calculs[i].chiffre1%></td>
+                                    <td><%= calculs[i].operateur %></td>
+                                    <td><%= calculs[i].chiffre2%></td>
+                                    <td><a  class="btn btn-success" href="/calcul/<%=calculs[i].id%>" style="margin-right:10px">=</a><a  class="btn btn-warning"href="/edit/<%=calculs[i].id%>">|</a></td>
+                                    <td><%= calculs[i].resultat%>  </td>
+                                   
+                                </tr>
+                                  <% } %>
+                         
+                      
+                        </tbody>
+                      </table>
 
-           
-                
-
-            
+               
         </div>
 
     </div>
