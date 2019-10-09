@@ -25,22 +25,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', function(req,res){
-connection.query("SELECT id,chiffre1, chiffre2, operateur, resultat FROM operation", function (err, result, fields) {
+   
+
+connection.query("SELECT id,chiffre1, chiffre2, operateur, resultat, statut FROM operation", function (err, result, fields) {
           if (err) throw err;
-            res.render('index', {calculs: result});
+          var edit = [];
+          edit[0] = '';
+          edit[1] = '';
+            res.render('index', {calculs: result,edit:edit});
         });
 });
 
 
 app.get('/calcul/:id', function(req,res){
    var id=req.params.id;
-    connection.query("SELECT chiffre1, chiffre2, operateur FROM operation  WHERE id="+id, function (err, result, fields) {
+    connection.query("SELECT chiffre1, chiffre2, operateur, statut FROM operation  WHERE id="+id, function (err, result, fields) {
               if (err) throw err;
-
-              var resultat = 0;
+              var chiffre1= Number(result[0].chiffre1);
+              var chiffre2= Number(result[0].chiffre2);
+              var stat=result[0].statut;
+             if(stat==0){ 
+                 
+                var resultat = 0;
               
-             var chiffre1= Number(result[0].chiffre1);
-             var chiffre2= Number(result[0].chiffre2);
+            
 
               switch (result[0].operateur) {
                 case '/':
@@ -57,28 +65,37 @@ app.get('/calcul/:id', function(req,res){
                   break;
                 default:
                         resultat = '';
+
+              } 
+              
+              connection.query("UPDATE operation SET resultat ="+resultat+" WHERE id="+id, function (err, result, fields) {
+                            if (err) throw err;
+                            res.redirect('/');
+                            });
+              }else{
+                  console.log('verrou');
               }
-              console.log(resultat);
-              console.log(result);
-             connection.query("UPDATE operation SET resultat ="+resultat+" WHERE id="+id, function (err, result, fields) {
-                if (err) throw err;
-                res.redirect('/');
+
+              /*console.log(resultat);
+              console.log(result);*/
+            
             
         });
     });
 
-    });
+  
 
 app.get('/edit/:id', function(req,res){
     var id=req.params.id;
   
-    connection.query("SELECT chiffre1, chiffre2, operateur FROM operation  WHERE id="+id, function (err, result, fields) {
+    connection.query("SELECT id,chiffre1, chiffre2, operateur FROM operation  WHERE id="+id, function (err, result, fields) {
         if (err) throw err;
             
         connection.query("SELECT id,chiffre1, chiffre2, operateur, resultat FROM operation", function (err, resultall, fields) {
             if (err) throw err;
-              console.log(resultall);
-              res.render('index', {calculs: resultall, edit: result });
+              /*console.log(resultall);
+              console.log(result);*/
+              res.render('edit', {calculs: resultall, edit: result });
           });
          
   
@@ -96,7 +113,21 @@ app.post('/add', function(req, res){
     res.redirect('/');
 });
 
+app.post('/update/:id', function(req, res){
+    /*var operation=req.body.name;*/
+   /* console.log(req.body.signe.toString());*/
+    connection.query("UPDATE operation SET chiffre1 = "+req.body.chiffre1+",chiffre2 = "+req.body.chiffre2+",operateur = '"+req.body.signe.toString()+"',resultat=null where id="+req.params.id, function(err, result){
+        if(err) throw err;
+            console.log("1 record updated");
+        });
+    res.redirect('/');
+});
 
+app.get('/verrou/:id', function(req,res){
+   
+console.log(req.params.id+'verrouillé');
+   /* connection.query("SELECT id,chiffre1, chiffre2, operateur, resultat, statut FROM operation", function (err, result, fields) {
+    if (err) throw err;*/});
 
 server.listen(8081);
 
