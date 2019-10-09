@@ -91,7 +91,7 @@ app.get('/edit/:id', function(req,res){
     connection.query("SELECT id,chiffre1, chiffre2, operateur FROM operation  WHERE id="+id, function (err, result, fields) {
         if (err) throw err;
             
-        connection.query("SELECT id,chiffre1, chiffre2, operateur, resultat FROM operation", function (err, resultall, fields) {
+        connection.query("SELECT id,chiffre1, chiffre2, operateur, statut, resultat FROM operation", function (err, resultall, fields) {
             if (err) throw err;
               /*console.log(resultall);
               console.log(result);*/
@@ -125,7 +125,12 @@ app.post('/update/:id', function(req, res){
 
 app.get('/verrou/:id', function(req,res){
    
-console.log(req.params.id+'verrouillé');
+/*console.log(req.params.id+'verrouillé');*/
+connection.query("UPDATE operation SET statut = 1 where id="+req.params.id, function(err, result){
+    if(err) throw err;
+        console.log(req.params.id+'verrouillé');
+    });
+res.redirect('/');
    /* connection.query("SELECT id,chiffre1, chiffre2, operateur, resultat, statut FROM operation", function (err, result, fields) {
     if (err) throw err;*/});
 

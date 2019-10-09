@@ -80,8 +80,8 @@
                                     <td><%= calculs[i].operateur %></td>
                                     <td><%= calculs[i].chiffre2%></td>
                                     <td><%= calculs[i].resultat%></td>
-                                    <td><input name ="statut" type="checkbox" onclick="doalert(<%=calculs[i].id%>)" <% if (calculs[i].statut==1){%> checked <%}%>></td>
-                                    <td><a  class="btn btn-success" href="/calcul/<%=calculs[i].id%>" style="margin-right:10px">calculer</a><a  class="btn btn-warning"href="/edit/<%=calculs[i].id%>">modifier</a></td>
+                                    <td><input name ="statut" type="checkbox" onclick="doalert(<%=calculs[i].id%>)" <% if (calculs[i].statut==1){%> checked disabled<%}%>></td>
+                                    <td><a class="btn btn-success" href="<% if (calculs[i].statut==1){%> / <%}else{%> /calcul/<%=calculs[i].id %> <%}%> " style="margin-right:10px"  >calculer</a><a  class="btn btn-warning" href="<% if (calculs[i].statut==1){%> / <%}else{%> /edit/<%=calculs[i].id %> <%}%>" <%if (calculs[i].statut==1){%> disabled <%}%>>modifier</a></td>
                                    
                                    
                                 </tr>

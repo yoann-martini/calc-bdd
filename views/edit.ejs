@@ -64,11 +64,11 @@
                 <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">n 1</th>
-                                <th scope="col">op</th>
-                                <th scope="col">n 2</th>
-                                <th scope="col">résultat</th>
+                                <th scope="col">Chiffre 1</th>
+                                <th scope="col">Opérateur</th>
+                                <th scope="col">Chiffre 2</th>
+                                <th scope="col">Résultat</th>
+                                <th scope="col">Verrou</th>
                                 <th scope="col">actions</th>
                             </tr>
                         </thead>
@@ -76,12 +76,12 @@
                          
                             <% for(let i =0; i<calculs.length; i++){ %>
                                     <tr>
-                                    <th scope="row"><%= i+1 %></th>
                                     <td><%= calculs[i].chiffre1%></td>
                                     <td><%= calculs[i].operateur %></td>
                                     <td><%= calculs[i].chiffre2%></td>
-                                    <td><%= calculs[i].resultat%>  </td>
-                                    <td><a  class="btn btn-success" href="/calcul/<%=calculs[i].id%>" style="margin-right:10px">calculer</a><a  class="btn btn-warning"href="/edit/<%=calculs[i].id%>">modifier</a></td>
+                                    <td><%= calculs[i].resultat%></td>
+                                    <td><input name ="statut" type="checkbox" onclick="doalert(<%=calculs[i].id%>)" <% if (calculs[i].statut==1){%> checked disabled<%}%>></td>
+                                    <td><a class="btn btn-success" href="<% if (calculs[i].statut==1){%> / <%}else{%> /calcul/<%=calculs[i].id %> <%}%> " style="margin-right:10px"  >calculer</a><a  class="btn btn-warning" href="<% if (calculs[i].statut==1){%> / <%}else{%> /edit/<%=calculs[i].id %> <%}%>" <%if (calculs[i].statut==1){%> disabled <%}%>>modifier</a></td>
                                    
                                    
                                 </tr>
@@ -95,6 +95,15 @@
         </div>
 
     </div>
+    <script>
+        function doalert(id) {
+                if (!id.checked) {
+                    window.location.replace("/verrou/"+id);
+                } else {
+                    alert ("bye");
+                }
+        }
+    </script>
 </body>
 
 </html>
