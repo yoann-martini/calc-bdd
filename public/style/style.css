@@ -1,0 +1,13 @@
+a.btn{
+  font-size:1em;
+}
+
+@media screen and (max-width: 768px) {
+    .btn.btn-warning {
+      margin-top:10px;
+    }
+    a.btn{
+
+    }
+  }
+

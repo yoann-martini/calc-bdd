@@ -1,3 +1,5 @@
+
+var express = require('express');
 const app = require('express')(),
 server = require('http').createServer(app),
 bodyParser = require('body-parser'),
@@ -23,7 +25,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
+app.use(express.static(__dirname + '/public'));
+console.log(__dirname);
 app.get('/', function(req,res){
    
 
@@ -134,7 +137,11 @@ res.redirect('/');
    /* connection.query("SELECT id,chiffre1, chiffre2, operateur, resultat, statut FROM operation", function (err, result, fields) {
     if (err) throw err;*/});
 
-server.listen(8081);
+app.get('/techno', function (req, res) {
+        res.render("techno");
+      });
+
+app.listen(8081);
 
 /*app.post('/calculate', function (req, res) {
     var chiffre1 = Number(req.body.chiffre1);
